@@ -30,6 +30,7 @@ NodeWebcam.capture('images/' + timestamp, {}, function() {
     body: file
   }, (err, res, obj) => {
     if(err) throw err;
+
     let face = JSON.parse(obj)[0];
     console.log(`
       😡 Anger: ${(face.scores.anger * 100).toFixed(2)}%
@@ -41,16 +42,10 @@ NodeWebcam.capture('images/' + timestamp, {}, function() {
       😮 Surprise: ${(face.scores.surprise * 100).toFixed(2)}%
       😃 Happy: ${(face.scores.happiness * 100).toFixed(2)}%
     `);
-    let topEmotion = '';
-    let topEmotionScore = 0;
-    // Work out top emotion
-    Object.keys(face.scores).forEach(key => {
-      if(face.scores[key] > topEmotionScore) {
-        topEmotion = key;
-        topEmotionScore = face.scores[key];
-      }
-    });
 
+    const topEmotion = Object.keys(face.scores).reduce((a, b) => face.scores[a] > face.scores[b] ? a : b);
+
+    // Update commit message
     if(process.argv.length === 3) {
       let commit = fs.readFileSync(process.argv[2], 'utf8');
       commit = emojiMap[topEmotion] + ' ' + commit;
