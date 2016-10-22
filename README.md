@@ -15,6 +15,7 @@ Takes a photo using your webcam and then sends the image to [Microsoft Cognitive
 *Mac OS* - `brew install imagesnap`
 
 1. `npm install`
+2. Create a `.env` file that includes `MS_KEY={your MS Cognitive Services API key}`
 
 ## Adding to a git repository
 
